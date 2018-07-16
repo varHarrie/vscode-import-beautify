@@ -1,0 +1,175 @@
+{
+    "name": "import-beautify",
+    "displayName": "Import Beautify",
+    "description": "VSCode extension to help grouping and beautify import statments.",
+    "version": "0.0.1",
+    "publisher": "varharrie",
+    "engines": {
+        "vscode": "^1.25.0"
+    },
+    "categories": [
+        "Formatters"
+    ],
+    "activationEvents": [
+        "onCommand:extension.beautifyImports"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.beautifyImports",
+                "title": "Beautify Imports"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.beautifyImports",
+                "key": "f10",
+                "when": "editorTextFocus && !editorReadonly"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Import Beautify Configuration",
+            "properties": {
+                "importBeautify.tabType": {
+                    "enum": [
+                        "space",
+                        "tab"
+                    ],
+                    "default": "space",
+                    "description": "define the character of tab"
+                },
+                "importBeautify.tabSize": {
+                    "type": "number",
+                    "default": 2,
+                    "description": "Define the size of tab"
+                },
+                "importBeautify.quotemark": {
+                    "enum": [
+                        "single",
+                        "double"
+                    ],
+                    "default": "single",
+                    "description": "Define type of quotes"
+                },
+                "importBeautify.trailingComma": {
+                    "enum": [
+                        "none",
+                        "multiLine",
+                        "always"
+                    ],
+                    "default": "multiLine",
+                    "description": "Add trailing comma or not"
+                },
+                "importBeautify.semicolon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Add semicolon or not"
+                },
+                "importBeautify.maxLineCount": {
+                    "type": "number",
+                    "default": 10,
+                    "description": "Define number of named import per line"
+                },
+                "importBeautify.maxLineLength": {
+                    "type": "number",
+                    "default": 120,
+                    "description": "Define charater count per line"
+                },
+                "importBeautify.orderBy": {
+                    "enum": [
+                        "none",
+                        "path",
+                        "names"
+                    ],
+                    "default": "path",
+                    "description": "Define default sort order of groups"
+                },
+                "importBeautify.orderCaseFirst": {
+                    "enum": [
+                        "ignore",
+                        "lower",
+                        "upper"
+                    ],
+                    "default": "lower",
+                    "description": "Define default sort order case first of groups"
+                },
+                "importBeautify.orderDirection": {
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "default": "asc",
+                    "description": "Define default sort order direction of groups"
+                },
+                "importBeautify.destructedOrderCaseFirst": {
+                    "enum": [
+                        "ignore",
+                        "lower",
+                        "upper"
+                    ],
+                    "default": "lower",
+                    "description": "Define sort order case first of destructed imports"
+                },
+                "importBeautify.destructedOrderDirection": {
+                    "enum": [
+                        "asc",
+                        "desc"
+                    ],
+                    "default": "asc",
+                    "description": "Define sort order direction of destructed imports"
+                },
+                "importBeautify.emptyLines": {
+                    "type": "number",
+                    "default": 1,
+                    "description": "Define number of empty lines after group"
+                },
+                "importBeautify.groups": {
+                    "type": "array",
+                    "default": [
+                        {
+                            "names": "^$",
+                            "orderBy": "none"
+                        },
+                        {
+                            "path": "^[^.]",
+                            "groups": [
+                                {"path": "react|vue|@"},
+                                {"names": "^\\*"},
+                                {"names": "^[^,{]+$"},
+                                {"names": "^[^{]"}
+                            ]
+                        },
+                        {
+                            "groups": [
+                                {"names": "^\\*"},
+                                {"names": "^[^,{]+$"},
+                                {"names": "^[^{]"}
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.6",
+        "tslint": "^5.8.0",
+        "@types/node": "^7.0.43",
+        "@types/mocha": "^2.2.42"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/varHarrie/import-beautify.git"
+    },
+    "license": "MIT"
+}
