@@ -32,13 +32,18 @@
             "type": "object",
             "title": "Import Beautify Configuration",
             "properties": {
+                "importBeautify.beautifyOnSave": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Whether execute beautify command before saving"
+                },
                 "importBeautify.tabType": {
                     "enum": [
                         "space",
                         "tab"
                     ],
                     "default": "space",
-                    "description": "define the character of tab"
+                    "description": "Define the character of tab"
                 },
                 "importBeautify.tabSize": {
                     "type": "number",
@@ -135,7 +140,7 @@
                         {
                             "path": "^[^.]",
                             "groups": [
-                                {"path": "react|vue|@"},
+                                {"names": "^\\*", "path": "^react|vue|@"},
                                 {"names": "^\\*"},
                                 {"names": "^[^,{]+$"},
                                 {"names": "^[^{]"}

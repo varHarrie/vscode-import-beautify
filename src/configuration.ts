@@ -107,4 +107,7 @@ export class Configuration {
     return this.config.get<Group[]>('groups')!
   }
   
+  public shouldBeautifyOnSave () {
+    return this.config.get<boolean>('beautifyOnSave')!
+  }
 }

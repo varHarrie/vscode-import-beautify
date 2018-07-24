@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 import * as regexp from './regexp'
-import { Configuration, OrderCaseFirstType, OrderDirectionType, TabType, TrailingCommaType, QuotemarkType, Group, OrderByType } from './configuration';
+import { Configuration, OrderCaseFirstType, OrderDirectionType, TabType, TrailingCommaType, QuotemarkType, Group, OrderByType } from './configuration'
 
 const allowedLanguages = [
   'typescript', 'typescriptreact'
@@ -19,10 +19,6 @@ type ImportItem = {
 export default class ImportBeautifier {
 
   private config = Configuration.from('importBeautify')
-
-  private shouldExecute (document: vscode.TextDocument) {
-    return allowedLanguages.indexOf(document.languageId) >= 0
-  }
 
   private getTabChars (tabType: TabType, tabSize: number) {
     return tabType === TabType.space
@@ -126,9 +122,13 @@ export default class ImportBeautifier {
     multiLine: boolean,
     comma: boolean
   ) {
-    if (!destructed) return ''
+    if (!destructed) {
+      return ''
+    }
 
-    if (!destructed.length) return '{}'
+    if (!destructed.length) {
+      return '{}'
+    }
 
     const c = multiLine ? tab : ''
     const l = destructed.length - 1
@@ -193,36 +193,39 @@ export default class ImportBeautifier {
     const quote = this.config.getQuotemark() === QuotemarkType.single ? '\'' : '"'
     const semi = this.config.hasSemicolon() ? ';' : ''
 
-    return imports.filter((list) => !!list.length)
+    return imports
+      .filter((list) => !!list.length)
       .map((list) => {
         return list.map((item) => {
           return item.names
             ? `import ${item.names} from ${quote}${item.path}${quote}${semi}`
             : `import ${quote}${item.path}${quote}${semi}`
         }).join('\n') + '\n'
-      }).join('\n'.repeat(emptyLines))
+      }).join('\n'.repeat(emptyLines)) + '\n'.repeat(emptyLines)
   }
 
-  public execute () {
-    const editor = vscode.window.activeTextEditor
-    
-    if (!editor) {
-      return
-    }
+  public shouldExecute (document: vscode.TextDocument) {
+    return allowedLanguages.indexOf(document.languageId) >= 0
+  }
 
-    if (!editor || !this.shouldExecute(editor.document)) {
-      return
+  public shouldExecuteOnSave (document: vscode.TextDocument) {
+    return this.config.shouldBeautifyOnSave() && this.shouldExecute(document)
+  }
+
+  public execute (document: vscode.TextDocument): vscode.TextEdit[] {
+    if (!this.shouldExecute(document)) {
+      return []
     }
 
     try {
-      const imports = this.parseImports(editor.document)
+      const imports = this.parseImports(document)
       const beautifulImports = this.beautifyImports(imports)
       const results = this.stringifyImports(beautifulImports)
 
-      editor.edit((builder) => {
-        imports.reverse().forEach((i) => builder.delete(i.range))
-        builder.insert(new vscode.Position(0, 0), results)
-      })
+      const edits = imports.reverse().map((i) => vscode.TextEdit.delete(i.range))
+      edits.push(vscode.TextEdit.insert(new vscode.Position(0, 0), results))
+
+      return edits
     } catch (error) {
       console.log(error)
       throw error
