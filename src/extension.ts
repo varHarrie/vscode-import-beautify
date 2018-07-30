@@ -14,6 +14,11 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     const edits = beautifier.execute(editor.document)
+    
+    if (!edits) {
+      return
+    }
+
     const edit = new vscode.WorkspaceEdit()
 
     edit.set(editor.document.uri, edits)

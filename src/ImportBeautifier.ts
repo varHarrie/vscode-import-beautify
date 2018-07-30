@@ -200,8 +200,8 @@ export default class ImportBeautifier {
           return item.names
             ? `import ${item.names} from ${quote}${item.path}${quote}${semi}`
             : `import ${quote}${item.path}${quote}${semi}`
-        }).join('\n') + '\n'
-      }).join('\n'.repeat(emptyLines)) + '\n'.repeat(emptyLines)
+        }).join('\r\n') + '\r\n'
+      }).join('\r\n'.repeat(emptyLines)) + '\r\n'.repeat(emptyLines)
   }
 
   public shouldExecute (document: vscode.TextDocument) {
@@ -212,18 +212,30 @@ export default class ImportBeautifier {
     return this.config.shouldBeautifyOnSave() && this.shouldExecute(document)
   }
 
-  public execute (document: vscode.TextDocument): vscode.TextEdit[] {
+  public execute (document: vscode.TextDocument): vscode.TextEdit[] | undefined {
     if (!this.shouldExecute(document)) {
-      return []
+      return undefined
     }
 
     try {
       const imports = this.parseImports(document)
       const beautifulImports = this.beautifyImports(imports)
-      const results = this.stringifyImports(beautifulImports)
+      const result = this.stringifyImports(beautifulImports)
+
+      if (!imports.length) {
+        return undefined
+      } else {
+        const start = new vscode.Position(0, 0)
+        const end = imports[imports.length - 1].range.end
+        const source = document.getText(new vscode.Range(start, end))
+        
+        if (source === result) {
+          return undefined
+        }
+      }
 
       const edits = imports.reverse().map((i) => vscode.TextEdit.delete(i.range))
-      edits.push(vscode.TextEdit.insert(new vscode.Position(0, 0), results))
+      edits.push(vscode.TextEdit.insert(new vscode.Position(0, 0), result))
 
       return edits
     } catch (error) {

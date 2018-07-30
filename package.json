@@ -2,7 +2,7 @@
     "name": "import-beautify",
     "displayName": "Import Beautify",
     "description": "VSCode extension to help grouping and beautify import statments.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "varharrie",
     "engines": {
         "vscode": "^1.25.0"
