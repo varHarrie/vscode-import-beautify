@@ -2,6 +2,10 @@
 
 VSCode extension to help grouping and beautify import statments.
 
+## Preview
+
+![](./assets/preview.gif)
+
 ## Features
 
 - [x] Group by Regexp, support child groups
