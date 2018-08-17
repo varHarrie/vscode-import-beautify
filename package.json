@@ -2,7 +2,7 @@
     "name": "import-beautify",
     "displayName": "Import Beautify",
     "description": "VSCode extension to help grouping and beautify import statments.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "varharrie",
     "engines": {
         "vscode": "^1.25.0"
@@ -138,9 +138,17 @@
                             "orderBy": "none"
                         },
                         {
-                            "path": "^[^.]",
+                            "path": "^[^.@]|@[^/]",
                             "groups": [
                                 {"names": "^\\*", "path": "^react|vue|@"},
+                                {"names": "^\\*"},
+                                {"names": "^[^,{]+$"},
+                                {"names": "^[^{]"}
+                            ]
+                        },
+                        {
+                            "path": "^@/",
+                            "groups": [
                                 {"names": "^\\*"},
                                 {"names": "^[^,{]+$"},
                                 {"names": "^[^{]"}
@@ -153,7 +161,13 @@
                                 {"names": "^[^{]"}
                             ]
                         }
-                    ]
+                    ],
+                    "description": "Define rules of group"
+                },
+                "importBeautify.pathRewrites": {
+                  "type": "object",
+                  "default": {},
+                  "description": "Define rules of path rewriting"
                 }
             }
         }

@@ -4,6 +4,11 @@ All notable changes to the "import-beautify" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.1.2] - 2018-08-17
+
+- Support path rewriting
+- Imporve default configurations
+
 ## [0.1.1] - 2018-07-26
 
 - Reduce meaningless execution
