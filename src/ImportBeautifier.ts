@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 import * as regexp from './regexp'
-import { Configuration, OrderCaseFirstType, OrderDirectionType, TabType, TrailingCommaType, QuotemarkType, Group, OrderByType } from './configuration'
+import { Configuration, OrderCaseFirstType, OrderDirectionType, TabType, TrailingCommaType, QuotemarkType, Group, OrderByType, PathRewrite } from './configuration'
 
 const allowedLanguages = [
   'typescript', 'typescriptreact'
@@ -163,6 +163,13 @@ export default class ImportBeautifier {
     return names
   }
 
+  private rewritePath (path: string, rewrites: PathRewrite[]) {
+    for (let r of rewrites) {
+      path = path.replace(r.regexp, r.replacement)
+    }
+    return path
+  }
+
   private beautifyImports (imports: ImportItem[]) {
     const destructedCaseFirst = this.config.getDestructedOrderCaseFirst()
     const destructedDirection = this.config.getDestructedOrderDirection()
@@ -175,10 +182,15 @@ export default class ImportBeautifier {
     const caseFirst = this.config.getOrderCaseFirst()
     const direction = this.config.getOrderDirection()
     const orderBy = this.config.getOrderBy()
+    const pathRewrites = this.config.getPathRewrites()
 
     imports.forEach((item) => {
       if (item.destructed) {
         item.destructed = item.destructed.sort((a, b) => this.sort(a[0], b[0], destructedCaseFirst, destructedDirection))
+      }
+
+      if (pathRewrites.length) {
+        item.path = this.rewritePath(item.path, pathRewrites)
       }
 
       const len = maxLength - (hasSemicolon ? 16 : 15) - item.path.length

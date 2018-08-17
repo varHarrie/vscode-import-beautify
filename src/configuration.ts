@@ -40,6 +40,11 @@ export type Group = {
   groups?: Group[]
 }
 
+export type PathRewrite = {
+  regexp: RegExp
+  replacement: string
+}
+
 export class Configuration {
   public static from (key: string) {
     return new Configuration(vscode.workspace.getConfiguration(key))
@@ -109,5 +114,16 @@ export class Configuration {
   
   public shouldBeautifyOnSave () {
     return this.config.get<boolean>('beautifyOnSave')!
+  }
+
+  public getPathRewrites () {
+    const obj = this.config.get<any>('pathRewrites') || {}
+    const rewrites: PathRewrite[] = []
+
+    for (let key in obj) {
+      rewrites.push({regexp: new RegExp(key), replacement: obj[key]})
+    }
+
+    return rewrites
   }
 }
