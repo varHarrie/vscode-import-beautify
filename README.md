@@ -4,7 +4,7 @@ VSCode extension to help grouping and beautify import statments.
 
 ## Preview
 
-![](./assets/preview.gif)
+![Preview](https://raw.githubusercontent.com/varHarrie/import-beautify/master/assets/preview.gif)
 
 ## Features
 
@@ -13,6 +13,9 @@ VSCode extension to help grouping and beautify import statments.
 - [x] Configuration with tab style, quotemark, trailing comma, semicolon...
 - [x] Beautify before save
 - [x] Path rewriting
+
+## Todos
+
 - [ ] Combine same paths
 - [ ] Project-base configuration
 - [ ] Allow exclude files
@@ -20,5 +23,4 @@ VSCode extension to help grouping and beautify import statments.
 # Inspiration
 
 - [import-sorter](https://github.com/SoominHan/import-sorter)
-
 - [sort-typescript-imports](https://github.com/MLoughry/sort-typescript-imports)
