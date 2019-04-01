@@ -202,6 +202,7 @@ export default class ImportBeautifier {
 
   private stringifyImports (imports: ImportItem[][]) {
     const emptyLines = this.config.getEmptyLines()
+    const lastEmptyLines = this.config.getLastEmptyLines()
     const quote = this.config.getQuotemark() === QuotemarkType.single ? '\'' : '"'
     const semi = this.config.hasSemicolon() ? ';' : ''
 
@@ -213,7 +214,7 @@ export default class ImportBeautifier {
             ? `import ${item.names} from ${quote}${item.path}${quote}${semi}`
             : `import ${quote}${item.path}${quote}${semi}`
         }).join('\r\n') + '\r\n'
-      }).join('\r\n'.repeat(emptyLines)) + '\r\n'.repeat(emptyLines)
+      }).join('\r\n'.repeat(emptyLines)) + '\r\n'.repeat(lastEmptyLines)
   }
 
   public shouldExecute (document: vscode.TextDocument) {

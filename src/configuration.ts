@@ -107,6 +107,10 @@ export class Configuration {
   public getEmptyLines () {
     return this.config.get<number>('emptyLines')!
   }
+
+  public getLastEmptyLines () {
+    return this.config.get<number>('lastEmptyLines')!
+  }
   
   public getGroups () {
     return this.config.get<Group[]>('groups')!
