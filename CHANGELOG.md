@@ -4,6 +4,10 @@ All notable changes to the "import-beautify" extension will be documented in thi
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.3.0] - 2019-04-01
+
+- Add config to set line count after last group
+
 ## [0.2.0] - 2018-08-20
 
 - Support path rewriting
